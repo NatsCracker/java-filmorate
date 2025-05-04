@@ -8,9 +8,6 @@ import ru.yandex.practicum.filmorate.annotation.ReleaseDateConstraint;
 
 import java.time.LocalDate;
 
-/**
- * Film.
- */
 @Getter // Получение полей
 @Setter // Установка полей
 public class Film {
