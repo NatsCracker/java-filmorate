@@ -21,12 +21,12 @@ class FilmorateApplicationTests {
 	@Test
 	void shouldReturnBadRequestWhenEmailIsInvalid() throws Exception {
 		String invalidUserJson = """
-            {
-              "email": "invalidemail.com",
-              "login": "validLogin",
-              "birthday": "2000-01-01"
-            }
-        """;
+			{
+			"email": "invalidemail.com",
+			"login": "validLogin",
+			"birthday": "2000-01-01"
+			}
+			""";
 
 		mockMvc.perform(post("/users")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -39,11 +39,11 @@ class FilmorateApplicationTests {
 	void shouldReturnOkWhenUserIsValid() throws Exception {
 		String validUserJson = """
             {
-              "email": "user@example.com",
+            "email": "user@example.com",
               "login": "validLogin",
               "birthday": "2000-01-01"
-            }
-        """;
+              }
+            """;
 
 		mockMvc.perform(post("/users")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -55,13 +55,13 @@ class FilmorateApplicationTests {
 	@Test
 	void shouldReturnBadRequestWhenNameIsEmpty() throws Exception {
 		String invalidFilmJson = """
-            {
+              {
               "name": "",
               "description": "Описание фильма",
               "releaseDate": "2000-01-01",
               "duration": 120
-            }
-        """;
+              }
+              """;
 
 		mockMvc.perform(post("/films")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -74,13 +74,13 @@ class FilmorateApplicationTests {
 	void shouldReturnBadRequestWhenDescriptionTooLong() throws Exception {
 		String longDescription = "a".repeat(201);
 		String invalidFilmJson = String.format("""
-            {
+              {
               "name": "Film Name",
               "description": "%s",
               "releaseDate": "2000-01-01",
               "duration": 100
-            }
-        """, longDescription);
+              }
+              """, longDescription);
 
 		mockMvc.perform(post("/films")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -92,13 +92,13 @@ class FilmorateApplicationTests {
 	@Test
 	void shouldReturnBadRequestWhenReleaseDateTooEarly() throws Exception {
 		String invalidFilmJson = """
-            {
+              {
               "name": "Early Film",
               "description": "Valid",
               "releaseDate": "1800-01-01",
               "duration": 90
-            }
-        """;
+              }
+              """;
 
 		mockMvc.perform(post("/films")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -110,13 +110,13 @@ class FilmorateApplicationTests {
 	@Test
 	void shouldReturnBadRequestWhenDurationIsNegative() throws Exception {
 		String invalidFilmJson = """
-            {
+              {
               "name": "Negative Duration",
               "description": "Valid",
               "releaseDate": "2000-01-01",
               "duration": -90
-            }
-        """;
+              }
+              """;
 
 		mockMvc.perform(post("/films")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -128,13 +128,13 @@ class FilmorateApplicationTests {
 	@Test
 	void shouldReturnOkWhenFilmIsValid() throws Exception {
 		String validFilmJson = """
-            {
+              {
               "name": "Good Film",
               "description": "Short description",
               "releaseDate": "2000-01-01",
               "duration": 100
-            }
-        """;
+              }
+              """;
 
 		mockMvc.perform(post("/films")
 						.contentType(MediaType.APPLICATION_JSON)
