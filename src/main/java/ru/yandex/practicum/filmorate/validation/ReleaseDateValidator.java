@@ -16,4 +16,3 @@ public class ReleaseDateValidator implements ConstraintValidator<ReleaseDateCons
         return value == null || !value.isBefore(CINEMA_BIRTHDAY);
     }
 }
-
