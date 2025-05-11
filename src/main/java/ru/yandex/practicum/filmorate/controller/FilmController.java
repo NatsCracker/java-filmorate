@@ -25,8 +25,10 @@ public class FilmController {
 
     @PutMapping // Метод PUT для обновления фильма
     public Film updateFilm(@RequestBody Film film) {
-        // простая замена по id, без базы
-        films.removeIf(f -> f.getId() == film.getId());
+        boolean removed = films.removeIf(f -> f.getId() == film.getId());
+        if (!removed) {
+            throw new RuntimeException("Film with id=" + film.getId() + " not found for update");
+        }
         films.add(film);
         return film;
     }

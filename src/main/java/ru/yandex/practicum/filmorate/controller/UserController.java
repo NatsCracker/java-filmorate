@@ -17,13 +17,19 @@ public class UserController {
 
     @PostMapping // Метод POST для создания пользователя
     public User createUser(@Valid @RequestBody User user) {
+        if (user.getName() == null || user.getName().isBlank()) {
+            user.setName(user.getLogin());
+        }
         users.add(user);
         return user;
     }
 
     @PutMapping // Метод PUT для обновления пользователя
-    public User updateUser(@RequestBody User user) {
-        users.removeIf(u -> u.getId() == user.getId());
+    public User updateUser(@Valid @RequestBody User user) {
+        boolean removed = users.removeIf(u -> u.getId() == user.getId());
+        if (!removed) {
+            throw new RuntimeException("User with id=" + user.getId() + " not found for update");
+        }
         users.add(user);
         return user;
     }
