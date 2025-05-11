@@ -14,12 +14,14 @@ import java.util.List;
 public class UserController {
 
     private final List<User> users = new ArrayList<>();
+    private long nextId = 1L;
 
     @PostMapping // Метод POST для создания пользователя
     public User createUser(@Valid @RequestBody User user) {
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
+        user.setId(nextId++);
         users.add(user);
         return user;
     }
@@ -29,6 +31,9 @@ public class UserController {
         boolean removed = users.removeIf(u -> u.getId() == user.getId());
         if (!removed) {
             throw new RuntimeException("User with id=" + user.getId() + " not found for update");
+        }
+        if (user.getName() == null || user.getName().isBlank()) {
+            user.setName(user.getLogin());
         }
         users.add(user);
         return user;

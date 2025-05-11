@@ -16,9 +16,11 @@ import java.util.List;
 public class FilmController {
 
     private final List<Film> films = new ArrayList<>();
+    private long nextId = 1;
 
     @PostMapping // Метод POST для добавления фильма
     public Film addFilm(@Valid @RequestBody Film film) {
+        film.setId(nextId++);
         films.add(film);
         return film;
     }
