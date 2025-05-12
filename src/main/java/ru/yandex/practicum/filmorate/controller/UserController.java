@@ -31,7 +31,7 @@ public class UserController {
 
     @PutMapping // Метод PUT для обновления пользователя
     public User updateUser(@Valid @RequestBody User user) {
-        if(!users.containsKey(user.getId())) {
+        if (!users.containsKey(user.getId())) {
             throw new NotFoundException("User with ID " + user.getId() + " not found");
         }
         if (user.getName() == null || user.getName().isBlank()) {
