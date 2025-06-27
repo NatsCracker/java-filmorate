@@ -31,4 +31,16 @@ public class Film {
     private int duration;
 
     private final Set<Long> likeUsers = new HashSet<>();  // Список пользователей, которым понравился фильм
+
+    public void addLike(Long userId) {
+        if (userId != null) {
+            likeUsers.add(userId);
+        }
+    }
+
+    public void removeLike(Long userId) {
+        if (userId != null) {
+            likeUsers.remove(userId);
+        }
+    }
 }

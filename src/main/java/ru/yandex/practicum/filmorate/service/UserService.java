@@ -40,23 +40,14 @@ public class UserService {
     // Добавить друга
     public void addFriend(long userId, long friendId) {
         User user = getUser(userId);
-        User friend = getUser(friendId);
+        user.addFriend(friendId);
 
-        if (!user.getListFriends().contains(friendId)) {
-            user.getListFriends().add(friendId);
-            friend.getListFriends().add(userId);
-        }
     }
 
     // Удалить друга
     public void removeFriend(long userId, long friendId) {
         User user = getUser(userId);
-        User friend = getUser(friendId);
-
-        if (user.getListFriends().contains(friendId)) {
-            user.getListFriends().remove(friendId);
-            friend.getListFriends().remove(userId);
-        }
+        user.removeFriend(friendId);
     }
 
     // Получить список друзей

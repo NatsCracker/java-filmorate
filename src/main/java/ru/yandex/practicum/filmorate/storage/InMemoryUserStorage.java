@@ -14,7 +14,9 @@ public class InMemoryUserStorage implements UserStorage {
     // Добавление пользователя в хранилище
     @Override
     public User createUser(User user) {
-        normalizaName(user);
+        if (user.getName() == null || user.getName().isEmpty()) {
+            user.setName(user.getLogin());
+        }
         user.setId(nextId++);
         users.put(user.getId(), user);
         return user;
@@ -26,7 +28,6 @@ public class InMemoryUserStorage implements UserStorage {
         if (!users.containsKey(user.getId())) {
             throw new NotFoundException("Пользователь с ID=" + user.getId() + " не найден");
         }
-        normalizaName(user);
         users.put(user.getId(), user);
         return user;
     }
@@ -55,10 +56,4 @@ public class InMemoryUserStorage implements UserStorage {
         return new ArrayList<>(users.values());
     }
 
-    // Нормализация имени пользователя
-    private void normalizaName(User user) {
-        if (user.getName() == null || user.getName().isBlank()) {
-            user.setName(user.getLogin());
-        }
-    }
 }

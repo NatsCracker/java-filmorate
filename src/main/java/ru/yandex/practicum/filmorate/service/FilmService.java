@@ -45,17 +45,13 @@ public class FilmService {
     // Добавление лайка к фильму
     public void addLike(long filmId, long userId) {
         Film film = getFilm(filmId);
-        ensureUserExists(userId);
-        film.getLikeUsers().add(userId);
+        film.addLike(userId);
     }
 
     // Удаление лайка к фильму
     public void removeLike(long filmId, long userId) {
         Film film = getFilm(filmId);
-        if (!film.getLikeUsers().contains(userId)) {
-            throw new NotFoundException("Фильм с id=" + filmId + " не содержит лайк от пользователя с id=" + userId);
-        }
-        film.getLikeUsers().remove(userId);
+        film.removeLike(userId);
     }
 
     // Получение самых популярных фильмов
@@ -67,11 +63,11 @@ public class FilmService {
 
     // Получение фильмов пользователя
     private Film getFilm(long filmId) {
-        return filmStorage.getFilmById(filmId).orElseThrow(() -> new NotFoundException("Фильм с id=" + filmId + " не найден"));
+        return filmStorage.getFilmById(filmId).orElseThrow(() -> new NotFoundException("Фильм с id=%d не найден".formatted(filmId)));
     }
 
     // Проверка существования пользователя
     private void ensureUserExists(long userId) {
-        userStorage.getUserById(userId).orElseThrow(() -> new NotFoundException("Пользователь с id=" + userId + " не найден"));
+        userStorage.getUserById(userId).orElseThrow(() -> new NotFoundException("Пользователь с id=%d не найден".formatted(userId)));
     }
 }

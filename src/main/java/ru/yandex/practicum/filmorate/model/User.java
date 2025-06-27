@@ -28,4 +28,19 @@ public class User {
     private LocalDate birthday;
 
     private Set<Long> listFriends = new HashSet<>(); // Список друзей
+
+
+    // Добавить друга
+    public void addFriend(long friendId) {
+        if (friendId != id) {
+            if (!listFriends.contains(friendId)) {
+                listFriends.add(friendId);
+            }
+        }
+    }
+
+    // Удалить друга
+    public void removeFriend(long friendId) {
+        listFriends.remove(friendId);
+    }
 }
