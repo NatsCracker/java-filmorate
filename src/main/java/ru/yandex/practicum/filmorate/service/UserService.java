@@ -1,11 +1,13 @@
 package ru.yandex.practicum.filmorate.service;
 
+import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,15 +41,31 @@ public class UserService {
 
     // Добавить друга
     public void addFriend(long userId, long friendId) {
-        User user = getUser(userId);
-        user.addFriend(friendId);
+        if (userId == friendId) {
+            throw new ValidationException("Нельзя добавить самого себя в друзья.");
+        }
+
+        User user = Optional.ofNullable(userStorage.getUserById(userId)).orElseThrow(() -> new NotFoundException("Пользователь с id=%d не найден".formatted(userId)));
+
+        User friend = Optional.ofNullable(userStorage.getUserById(friendId)).orElseThrow(() -> new NotFoundException("Пользователь с id=%d не найден".formatted(friendId)));
+
+        user.getListFriends().add(friendId);
+        friend.getListFriends().add(userId);
 
     }
 
     // Удалить друга
     public void removeFriend(long userId, long friendId) {
-        User user = getUser(userId);
-        user.removeFriend(friendId);
+        if (userId == friendId) {
+            throw new ValidationException("Нельзя удалить самого себя из друзей.");
+        }
+
+        User user = Optional.ofNullable(userStorage.getUserById(userId)).orElseThrow(() -> new NotFoundException("Пользователь с id=%d не найден".formatted(userId)));
+
+        User friend = Optional.ofNullable(userStorage.getUserById(friendId)).orElseThrow(() -> new NotFoundException("Пользователь с id=%d не найден".formatted(friendId)));
+
+        user.getListFriends().remove(friendId);
+        friend.getListFriends().remove(userId);
     }
 
     // Получить список друзей
@@ -65,6 +83,6 @@ public class UserService {
 
     // Получить пользователя по id из хранилища если он существует
     private User getUser(long userId) {
-        return userStorage.getUserById(userId).orElseThrow(() -> new NotFoundException("Пользователь с id=" + userId + " не найден"));
+        return Optional.ofNullable(userStorage.getUserById(userId)).orElseThrow(() -> new NotFoundException("Пользователь с id=" + userId + " не найден"));
     }
 }
