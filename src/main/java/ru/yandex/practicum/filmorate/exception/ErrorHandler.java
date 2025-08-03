@@ -16,6 +16,7 @@ public class ErrorHandler {
     @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class, jakarta.validation.ValidationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidation(Exception e) {
+        log.warn("Ошибка валидации: {}", e.getMessage());
         return new ErrorResponse(e.getMessage());
     }
 
@@ -23,6 +24,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFound(NotFoundException e) {
+        log.warn("Ресурс не найден: {}", e.getMessage());
         return new ErrorResponse(e.getMessage());
     }
 
@@ -30,6 +32,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleThrowable(Throwable e) {
+        log.error("Непредвиденная ошибка: {}", e.getMessage(), e);
         return new ErrorResponse("Произошла непредвиденная ошибка.");
     }
 }

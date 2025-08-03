@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -11,12 +12,9 @@ import java.util.List;
 @Slf4j // Логирование
 @RestController // Контроллер для REST API
 @RequestMapping("/films") // Маршрут для обработки запросов /films
+@AllArgsConstructor
 public class FilmController {
     private final FilmService filmService;
-
-    public FilmController(FilmService filmService) {
-        this.filmService = filmService;
-    }
 
     @PostMapping // Метод POST для добавления фильма
     public Film addFilm(@Valid @RequestBody Film film) {

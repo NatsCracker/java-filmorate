@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -13,16 +14,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class FilmService {
     private static final int DEFAULT_COUNT = 10;
 
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
 
-    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
-        this.filmStorage = filmStorage;
-        this.userStorage = userStorage;
-    }
 
     // Добавление фильма в хранилище
     public Film addFilm(Film film) {
@@ -57,11 +55,9 @@ public class FilmService {
 
     // Удаление лайка к фильму
     public void removeLike(long filmId, long userId) {
-        Film film = Optional.ofNullable(filmStorage.getFilmById(filmId))
-                .orElseThrow(() -> new NotFoundException("Фильм с id=%d не найден".formatted(filmId)));
+        Film film = filmStorage.getFilmById(filmId);
 
-        User user = Optional.ofNullable(userStorage.getUserById(userId))
-                .orElseThrow(() -> new NotFoundException("Пользователь с id=%d не найден".formatted(userId)));
+        User user = userStorage.getUserById(userId);
         film.removeLike(userId);
     }
 
@@ -74,7 +70,6 @@ public class FilmService {
 
     // Получение фильмов пользователя
     private Film getFilm(long filmId) {
-        return Optional.ofNullable(filmStorage.getFilmById(filmId))
-                .orElseThrow(() -> new NotFoundException("Фильм с id=%d не найден".formatted(filmId)));
+        return filmStorage.getFilmById(filmId);
     }
 }

@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import jakarta.validation.ValidationException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +21,17 @@ public class UserController {
 
     @PostMapping // Метод POST для создания пользователя
     public User createUser(@Valid @RequestBody User user) {
+        if (user.getName() == null || user.getName().isEmpty()) {
+            user.setName(user.getLogin());
+        }
         return userService.add(user);
     }
 
     @PutMapping // Метод PUT для обновления пользователя
     public User updateUser(@Valid @RequestBody User user) {
+        if (user.getName() == null || user.getName().isEmpty()) {
+            user.setName(user.getLogin());
+        }
         return userService.update(user);
     }
 
@@ -40,11 +47,17 @@ public class UserController {
 
     @PutMapping("/{userId}/friends/{friendId}")  // Метод PUT для добавления друга
     public void addFriend(@PathVariable Long userId, @PathVariable Long friendId) {
+        if (userId == friendId) {
+            throw new ValidationException("Нельзя добавить самого себя в друзья.");
+        }
         userService.addFriend(userId, friendId);
     }
 
     @DeleteMapping("/{userId}/friends/{friendId}") // Метод DELETE для удаления друга
     public void removeFriend(@PathVariable Long userId, @PathVariable Long friendId) {
+        if (userId == friendId) {
+            throw new ValidationException("Нельзя удалить самого себя из друзей.");
+        }
         userService.removeFriend(userId, friendId);
     }
 
