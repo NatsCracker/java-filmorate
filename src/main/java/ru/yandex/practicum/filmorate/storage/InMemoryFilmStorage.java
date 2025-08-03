@@ -36,6 +36,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (films.remove(id) == null) {
             throw new NotFoundException("Фильм с id=" + id + " не найден");
         }
+        films.remove(id);
     }
 
     // Получение всех фильмов из хранилища
