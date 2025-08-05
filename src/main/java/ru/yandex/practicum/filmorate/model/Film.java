@@ -1,12 +1,16 @@
 package ru.yandex.practicum.filmorate.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-
-import jakarta.validation.constraints.*;
 import ru.yandex.practicum.filmorate.annotation.ReleaseDateConstraint;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter // Получение полей
 @Setter // Установка полей
@@ -14,15 +18,29 @@ public class Film {
     public Long id;
 
     @NotBlank(message = "Название не может быть пустым!") // Проверка на пустоту
-    public String name;
+    private String name;
 
-    @Size (max = 200, message = "Описание не может быть больше 200 символов!") // Проверка на длину
-    public String description;
+    @Size(max = 200, message = "Описание не может быть больше 200 символов!") // Проверка на длину
+    private String description;
 
     @NotNull(message = "Дата выхода не может быть пустой!") // Проверка на пустоту
     @ReleaseDateConstraint // Проверка на корректность даты
-    public LocalDate releaseDate;
+    private LocalDate releaseDate;
 
     @Positive(message = "Длительность не может быть отрицательной!") // Проверка на положительность
-    public int duration;
+    private int duration;
+
+    private final Set<Long> likeUsers = new HashSet<>();  // Список пользователей, которым понравился фильм
+
+    public void addLike(Long userId) {
+        if (userId != null) {
+            likeUsers.add(userId);
+        }
+    }
+
+    public void removeLike(Long userId) {
+        if (userId != null) {
+            likeUsers.remove(userId);
+        }
+    }
 }
